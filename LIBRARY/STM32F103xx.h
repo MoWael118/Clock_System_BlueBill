@@ -19,6 +19,7 @@
 
 /************************     	 CORE PERIPHERALS BASE ADDRESSES	************************/
 #define SYSTICK_BASE_ADDRESS				0xE000E010UL
+#define NVIC_BASE_ADDRESS         			0xE000E100UL
 
 /************************     	AHB  BASE PERIPHERALS ADDRESSES		************************/
 #define EXTI_BASE_ADDRESS         0x40010400UL
@@ -70,7 +71,6 @@ typedef struct {
 
 }AFIO_REG_t;
 /************************     	AFIO PERIPHERAL DEFINITION			************************/
-//#define AFIO 					((AFIO_REG_t *)(AFIO_BASE_ADDRESS))
 
 /************************     	SYSTICK REGISTERS DEFINITION		************************/
 
@@ -119,6 +119,27 @@ typedef struct
 /********************    EXTI Peripheral DEFINITION         ********************************/
 
 #define EXTI                      ( (EXTI_RegDef_t*)EXTI_BASE_ADDRESS )
+
+/********************    NVIC REGISTER DEFINITION STRUCTURE        ********************************/
+
+typedef struct
+{
+	volatile uint32_t ISER[3];		/* Interrupt set-enable register */
+	uint32_t Reserved2[30];			/* Offset */
+	volatile uint32_t ICER[3]; 		/* Interrupt clear-enable register */
+	uint32_t Reserved3[30];			/* Offset */
+	volatile uint32_t ISPR[3];		/* Interrupt set-pending register */
+	uint32_t Reserved4[30];			/* Offset */
+	volatile uint32_t ICPR[3];		/* Interrupt clear-pending register */
+	uint32_t Reserved5[30];			/* Offset */
+	volatile uint32_t IABR[3];		/* Interrupt active bit register */
+	uint32_t Reserved6[62];			/* Offset */
+	volatile uint8_t IPR[33];		/* Interrupt Priority Registers */
+
+} NVIC_RegDef_t;
+
+/******************* NVIC structure pointer **********************/
+#define NVIC                     ( (NVIC_RegDef_t*) NVIC_BASE_ADDRESS )
 
 
 /************************     	PERIPHERAL REGISTER BITS DEFINITION	************************/
