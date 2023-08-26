@@ -6,8 +6,8 @@
 
 #include <stdint.h>
 #include "../Inc/SYSTICK_Interface.h"
-#include "../../../Inc/ErrTypes.h"
-#include "../../../Inc/STM32F103xx.h"
+#include "../../LIBRARY/ErrTypes.h"
+#include "../../LIBRARY/STM32F103xx.h"
 
 /***********************************
  * @function 		:	SYSTICK_u8SetConfigs
