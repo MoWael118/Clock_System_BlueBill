@@ -9,7 +9,7 @@
 
 /******************* MAIN INCLUDES *********************/
 #include <stdint.h>
-#include "../../../Inc/ErrTypes.h"
+#include "../../LIBRARY//ErrTypes.h"
 /*******************************************************/
 
 

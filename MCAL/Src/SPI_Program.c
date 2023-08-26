@@ -6,9 +6,9 @@
 
 /******************* MAIN INCLUDES *********************/
 #include <stdint.h>
-#include "../../../Inc/STM32F103xx.h"
-#include "../../../Inc/ErrTypes.h"
-#include "../../../Inc/BitMath.h"
+#include "../../LIBRARY/STM32F103xx.h"
+#include "../../LIBRARY/ErrTypes.h"
+#include "../../LIBRARY/BitMath.h"
 
 #include "../Inc/SPI_Interface.h"
 #include "../Inc/SPI_Private.h"
