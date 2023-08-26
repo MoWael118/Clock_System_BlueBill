@@ -8,8 +8,8 @@
 #include <stdint.h>
 
 #include "../Inc/GPIO_Interface.h"
-#include "../../../Inc/STM32F103xx.h"
-#include "../../../Inc/ErrTypes.h"
+#include "../../LIBRARY/STM32F103xx.h"
+#include "../../LIBRARY/ErrTypes.h"
 
 
  GPIO_REG_t * GPIO_PORT[GPIO_NUMBERS]={GPIOA	,GPIOB	,GPIOC	,GPIOD	,GPIOE	,GPIOF	,GPIOG};

@@ -9,7 +9,7 @@
 #define MCAL_GPIO_INC_GPIO_INTERFACE_H_
 
 #include "GPIO_Private.h"
-#include "../../../Inc/STM32F103xx.h"
+#include "../../LIBRARY/STM32F103xx.h"
 
 
 typedef enum {
