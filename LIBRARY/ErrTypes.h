@@ -21,6 +21,7 @@ typedef enum  {  NOK , OK ,Null_Pointer,InvalidPORTPIN
 					,SPI_WRONG_MULTIMASTER_STATE
 					,SPI_WRONG_SPI_NUMBER
 					,WRONG_SLAVE_STATE}Error_State_t;
+
 #define NULL ((void *)0)
 #define FLAG_RESET		0
 #define FLAG_SET		1
