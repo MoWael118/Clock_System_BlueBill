@@ -10,10 +10,10 @@
 
 /**********************   Includes section *****************************/
 #include "stdint.h"
-#include "BIT_MATH.h"
-#include "Stm32f103xx.h"
-#include "ErrType.h"
-#include "EXTI_Interface.h"
+#include "../../LIBRARY/BitMath.h"
+#include "../../LIBRARY/STM32F103xx.h"
+#include "../../LIBRARY/ErrTypes.h"
+#include "../Inc/EXTI_Interface.h"
 
 
 /**********************   Global Variables section *****************************/
