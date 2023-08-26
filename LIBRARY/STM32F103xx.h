@@ -22,14 +22,14 @@
 #define NVIC_BASE_ADDRESS         			0xE000E100UL
 
 /************************     	AHB  BASE PERIPHERALS ADDRESSES		************************/
-#define EXTI_BASE_ADDRESS         0x40010400UL
-#define AFIO_BASE_ADDRESS         0x40010000UL
+#define EXTI_BASE_ADDRESS        			0x40010400UL
+#define AFIO_BASE_ADDRESS        			0x40010000UL
+#define RCC_BASE_ADDRESS					0x40021000UL
 
 /************************     	APB 1 BASE PERIPHERALS ADDRESSES	************************/
 #define SPI2_BASE_ADDRESS					0x40003800UL
 
 /************************     	APB 2 BASE PERIPHERALS ADDRESSES	************************/
-#define AFIO_BASE_ADDRESS			        0x40010000UL
 
 #define GPIOA_BASE_ADDRESS			        0x40010800UL
 #define GPIOB_BASE_ADDRESS                  0x40010C00UL
@@ -71,7 +71,7 @@ typedef struct
 
 }AFIO_RegDef_t;
 
-#define AFIO                      ((AFIO_RegDef_t*)AFIO_BASE_ADDRESS )
+#define 	AFIO            	    ((AFIO_RegDef_t * )(AFIO_BASE_ADDRESS))
 
 /************************     	AFIO PERIPHERAL DEFINITION			************************/
 
@@ -140,7 +140,23 @@ typedef struct
 
 #define NVIC                     ( (NVIC_RegDef_t*) NVIC_BASE_ADDRESS )
 
+/********************    RCC REGISTER DEFINITION STRUCTURE        ********************************/
 
+typedef struct
+{
+	uint32_t CR;
+	uint32_t CFGR;
+	uint32_t CIR;
+	uint32_t APB2RSTR;
+	uint32_t APB1RSTR;
+	uint32_t AHBENR;
+	uint32_t APB2ENR;
+	uint32_t APB1ENR;
+	uint32_t BDCR;
+	uint32_t CSR;
+}RCC_REG_t;
+
+#define RCC 				((RCC_REG_t*)(RCC_BASE_ADDRESS))
 /************************     	PERIPHERAL REGISTER BITS DEFINITION	************************/
 
 /************************     	ISR DEFINITIONS 					************************/
