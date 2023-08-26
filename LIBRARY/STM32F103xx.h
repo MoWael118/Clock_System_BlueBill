@@ -23,6 +23,7 @@
 
 /************************     	AHB  BASE PERIPHERALS ADDRESSES		************************/
 #define EXTI_BASE_ADDRESS         0x40010400UL
+#define AFIO_BASE_ADDRESS         0x40010000UL
 
 /************************     	APB 1 BASE PERIPHERALS ADDRESSES	************************/
 #define SPI2_BASE_ADDRESS					0x40003800UL
@@ -60,16 +61,18 @@ typedef struct{
 
 
 /************************     	AFIO REGISTERS DEFINITION			************************/
-typedef struct {
-	uint32_t EVCR;
-	uint32_t MAPR;
-	uint32_t EXTICR1;
-	uint32_t EXTICR2;
-	uint32_t EXTICR3;
-	uint32_t EXTICR4;
-	uint32_t MAPR2;
+typedef struct
+{
+	volatile uint32_t EVCR ;        /* Event control register                          */
+	volatile uint32_t MAPR ;        /* SYSCFG memory remap register                    */
+	volatile uint32_t EXTICR[4] ;   /*SYSCFG external interrupt configuration register */
+	uint32_t Reserved1;             /* offset                                          */
+	volatile uint32_t MAPR2 ;       /* AF remap and debug I/O configuration register2  */
 
-}AFIO_REG_t;
+}AFIO_RegDef_t;
+
+#define AFIO                      ((AFIO_RegDef_t*)AFIO_BASE_ADDRESS )
+
 /************************     	AFIO PERIPHERAL DEFINITION			************************/
 
 /************************     	SYSTICK REGISTERS DEFINITION		************************/
@@ -115,9 +118,6 @@ typedef struct
 
 }EXTI_RegDef_t;
 
-
-/********************    EXTI Peripheral DEFINITION         ********************************/
-
 #define EXTI                      ( (EXTI_RegDef_t*)EXTI_BASE_ADDRESS )
 
 /********************    NVIC REGISTER DEFINITION STRUCTURE        ********************************/
@@ -138,7 +138,6 @@ typedef struct
 
 } NVIC_RegDef_t;
 
-/******************* NVIC structure pointer **********************/
 #define NVIC                     ( (NVIC_RegDef_t*) NVIC_BASE_ADDRESS )
 
 
