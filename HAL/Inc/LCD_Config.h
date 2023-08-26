@@ -8,7 +8,7 @@
 #ifndef HAL_LCD_INC_LCD_CONFIG_H_
 #define HAL_LCD_INC_LCD_CONFIG_H_
 
-#include "../../../MCAL/GPIO/Inc/GPIO_Interface.h"
+#include "../../MCAL/Inc/GPIO_Interface.h"
 
 /*******************************************************
  * Configure LCD Data Port and pins

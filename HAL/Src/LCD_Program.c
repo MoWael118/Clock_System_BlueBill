@@ -5,13 +5,13 @@
  */
 
 #include <stdint.h>
-#include "../../../Inc/ErrTypes.h"
-#include "../../../Inc/BitMath.h"
+#include "../../LIBRARY/ErrTypes.h"
+#include "../../LIBRARY/BitMath.h"
 #include "../Inc/LCD_Interface.h"
 
-#include "../../../MCAL/RCC/Inc/RCC_Interface.h"
-#include "../../../MCAL/GPIO/Inc/GPIO_Interface.h"
-#include "../../../MCAL/SYSTICK/Inc/SYSTICK_Interface.h"
+#include "../../MCAL/Inc/RCC_Interface.h"
+#include "../../MCAL/Inc/GPIO_Interface.h"
+#include "../../MCAL/Inc/SYSTICK_Interface.h"
 
 static GPIO_REG_t* LCD_PORT = GPIOB;
 
@@ -155,8 +155,8 @@ void LCD_voidInit(void)
 
 
 	/*Enable GPIO Clock*/
-	RCC_Set_APB2Peripheral_CLK(IOPA, ENABLED);
-	RCC_Set_APB2Peripheral_CLK(IOPB, ENABLED);
+	RCC_Set_APB2Peripheral_CLK(APB2_IOPA, ENABLED);
+	RCC_Set_APB2Peripheral_CLK(APB2_IOPB, ENABLED);
 
 
 	/*Initialize LCD pins Array of structures with each pin configurations*/
