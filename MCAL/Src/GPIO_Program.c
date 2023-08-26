@@ -1,8 +1,7 @@
 /*
- * GPIO_Program.c
- *
- *  Created on: May 10, 2023
- *      Author: mhmd wael
+ *@file		:	GPIO_Program.c
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main Program for GPIO peripheral
  */
 
 #include <stdint.h>

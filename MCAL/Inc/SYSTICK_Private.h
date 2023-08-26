@@ -1,9 +1,9 @@
 /*
- * SYSTICK_Private.h
- *
- *  Created on: May 11, 2023
- *      Author: mhmd wael
+ *@file		:	SYSTICK_Private.h
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main Private Defines for SysTick peripheral
  */
+
 
 #ifndef SYSTICK_INC_SYSTICK_PRIVATE_H_
 #define SYSTICK_INC_SYSTICK_PRIVATE_H_

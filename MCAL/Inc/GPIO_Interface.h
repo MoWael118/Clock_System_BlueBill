@@ -1,9 +1,9 @@
 /*
- * GPIO_Interface.h
- *
- *  Created on: May 10, 2023
- *      Author: mhmd wael
+ *@file		:	GPIO_INTERFACE.h
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main functions for GPIO peripheral
  */
+
 
 #ifndef MCAL_GPIO_INC_GPIO_INTERFACE_H_
 #define MCAL_GPIO_INC_GPIO_INTERFACE_H_

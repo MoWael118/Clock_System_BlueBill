@@ -13,6 +13,12 @@
 #include "LCD_Config.h"
 #include "LCD_Private.h"
 
+#include "../../MCAL/Inc/RCC_Interface.h"
+#include "../../MCAL/Inc/GPIO_Interface.h"
+#include "../../MCAL/Inc/SYSTICK_Interface.h"
+
+#include "../../LIBRARY/ErrTypes.h"
+#include "../../LIBRARY/BitMath.h"
 
 /***********************************
  * @function 		:	LCD_voidInit

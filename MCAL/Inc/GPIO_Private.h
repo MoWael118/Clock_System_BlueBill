@@ -1,9 +1,9 @@
 /*
- * GPIO_Private.h
- *
- *  Created on: May 10, 2023
- *      Author: mhmd wael
+ *@file		:	GPIO_Private.h
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main Private Defines for GPIO peripheral
  */
+
 
 #ifndef MCAL_GPIO_INC_GPIO_PRIVATE_H_
 #define MCAL_GPIO_INC_GPIO_PRIVATE_H_

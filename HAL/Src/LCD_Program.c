@@ -4,14 +4,12 @@
  *@brief	:	Main Program for LCD
  */
 
+
 #include <stdint.h>
-#include "../../LIBRARY/ErrTypes.h"
-#include "../../LIBRARY/BitMath.h"
+
 #include "../Inc/LCD_Interface.h"
 
-#include "../../MCAL/Inc/RCC_Interface.h"
-#include "../../MCAL/Inc/GPIO_Interface.h"
-#include "../../MCAL/Inc/SYSTICK_Interface.h"
+
 
 static GPIO_REG_t* LCD_PORT = GPIOB;
 

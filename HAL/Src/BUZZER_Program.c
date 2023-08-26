@@ -6,8 +6,6 @@
 
 /******************* MAIN INCLUDES *********************/
 #include <stdint.h>
-#include "../../LIBRARY/ErrTypes.h"
-#include "../../MCAL/Inc/GPIO_Interface.h"
 #include "../Inc/BUZZER_Interface.h"
 /*******************************************************/
 
