@@ -9,8 +9,8 @@
 
 /******************* MAIN INCLUDES *********************/
 #include <stdint.h>
-#include "../../../Inc/ErrTypes.h"
-#include "../../../MCAL/GPIO/Inc/GPIO_Interface.h"
+#include "../../LIBRARY/ErrTypes.h"
+#include "../../MCAL/Inc/GPIO_Interface.h"
 /*******************************************************/
 
 /****************** MAIN FUNCTIONS *********************/
