@@ -367,11 +367,11 @@ Error_State_t SPI_SET_Internal_Slave_State(SPI_SPI_NUMBER_t SPI_Num, SLAVE_STATE
 
 	if (( SPI_Num >=SPI_NUMBER1) && ( SPI_Num <=SPI_NUMBER2))
 	{
-		if (Slave_State = SLAVE_STATE_ACTIVATED)
+		if (Slave_State == SLAVE_STATE_ACTIVATED)
 		{
 			SPIs[SPI_Num]->SPI_CR1 &= ~(1<<(SSI_BIT));
 		}
-		else if (Slave_State = SLAVE_STATE_DEACTIVATED)
+		else if (Slave_State == SLAVE_STATE_DEACTIVATED)
 		{
 			SPIs[SPI_Num]->SPI_CR1 |= (1<<(SSI_BIT));
 		}
@@ -512,14 +512,14 @@ static void SPI_IRQ_Source_HANDLE(SPI_SPI_NUMBER_t SPI_Num)
 		/*Whole buffer Receiving is done*/
 		if (Global_Data_Size==1)
 		{
+			/*Receive the next data element*/
+			Global_Received_Data[Counter++] = SPIs[SPI_Num]->SPI_DR;
+
 			/*Disable the RXC interrupt*/
 			SPIs[SPI_Num]->SPI_CR2 &= ~(1<<(SPI_INTERRUPT_RXNEIE));
 
 			/*Clear IRQ Source*/
 			IRQ_Source[SPI_Num] = NO_SRC;
-
-			/*Receive the next data element*/
-			Global_Received_Data[Counter++] = SPIs[SPI_Num]->SPI_DR;
 
 			/*Call The call Back Function*/
 			SPI_pf_CallBackFuncs[SPI_Num][SPI_FLAGS_RXNE]();
