@@ -32,7 +32,7 @@ SPI_CONFIGS_t * SPICONFIG ;
 
 PinConfig_t * REDLED1_CONFIG ;
 
-extern uint16_t  DATA_ReceivedFromSPI ;
+extern uint8_t  DATA_ReceivedFromSPI ;
 /*****************************************************************************/
 /****************   FUNCTIONS IMPLEMENTATION SECTION    **********************/
 /*****************************************************************************/
