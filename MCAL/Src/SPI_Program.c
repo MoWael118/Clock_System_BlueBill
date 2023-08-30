@@ -28,10 +28,10 @@ static void (*SPI_pf_CallBackFuncs[MAX_SPIs_NUMBER][SPI_MAX_INTERRUPTS])(void)={
 static uint8_t Global_Data_Size=0;
 
 /*Variable to Save the Data buffer globally*/
-static uint16_t* Global_Data_Buffer=NULL;
+static uint8_t* Global_Data_Buffer=NULL;
 
 /*Variable to Save the Received globally*/
-static uint16_t* Global_Received_Data=NULL;
+static uint8_t* Global_Received_Data=NULL;
 /*******************************************************/
 
 /****************** MAIN FUNCTIONS *********************/
@@ -212,7 +212,7 @@ Error_State_t SPI_Receive(const SPI_CONFIGS_t * SPI_Config, uint16_t * Received_
  * @param			:	CallBack Function
  * @retval			:	Error State
  */
-Error_State_t SPI_Transmit_IT(const SPI_CONFIGS_t * SPI_Config, uint16_t * Data , uint8_t Buffer_Size, void (* SPI_TXC_CallBackFunc)(void))
+Error_State_t SPI_Transmit_IT(const SPI_CONFIGS_t * SPI_Config, uint8_t * Data , uint8_t Buffer_Size, void (* SPI_TXC_CallBackFunc)(void))
 {
 	Error_State_t 	Error_State = 	OK	;
 	if ((NULL != Data) && (NULL != SPI_TXC_CallBackFunc))
@@ -261,7 +261,7 @@ Error_State_t SPI_Transmit_IT(const SPI_CONFIGS_t * SPI_Config, uint16_t * Data 
  * @param			:	CallBack Function
  * @retval			:	Error State
  */
-Error_State_t SPI_Receive_IT(const SPI_CONFIGS_t * SPI_Config, uint16_t * Received_Data ,uint8_t Buffer_Size , void (* SPI_RXC_CallBackFunc)(void))
+Error_State_t SPI_Receive_IT(const SPI_CONFIGS_t * SPI_Config, uint8_t * Received_Data ,uint8_t Buffer_Size , void (* SPI_RXC_CallBackFunc)(void))
 {
 	Error_State_t 	Error_State = 	OK	;
 	if ((NULL != Received_Data) && (NULL != SPI_RXC_CallBackFunc))
@@ -367,11 +367,11 @@ Error_State_t SPI_SET_Internal_Slave_State(SPI_SPI_NUMBER_t SPI_Num, SLAVE_STATE
 
 	if (( SPI_Num >=SPI_NUMBER1) && ( SPI_Num <=SPI_NUMBER2))
 	{
-		if (Slave_State = SLAVE_STATE_ACTIVATED)
+		if (Slave_State == SLAVE_STATE_ACTIVATED)
 		{
 			SPIs[SPI_Num]->SPI_CR1 &= ~(1<<(SSI_BIT));
 		}
-		else if (Slave_State = SLAVE_STATE_DEACTIVATED)
+		else if (Slave_State == SLAVE_STATE_DEACTIVATED)
 		{
 			SPIs[SPI_Num]->SPI_CR1 |= (1<<(SSI_BIT));
 		}
@@ -498,51 +498,42 @@ static void SPI_IRQ_Source_HANDLE(SPI_SPI_NUMBER_t SPI_Num)
 
 			/*Call The call Back Function*/
 			SPI_pf_CallBackFuncs[SPI_Num][SPI_FLAGS_TXE]();
-		}
 
+			Counter=1;
+		}
 		/*Buffer isn't completely sent*/
 		else {
+
 			/*Send the next data element in the buffer*/
 			SPIs[SPI_Num]->SPI_DR = Global_Data_Buffer[Counter++];
+
 		}
 	}
 	else if (IRQ_Source[SPI_Num] == SOURCE_RX_SLAVE)
 	{
 		static uint16_t Counter=0;
-		/*Whole buffer Receiving is done*/
-		if (Global_Data_Size==1)
+
+		if (Counter == Global_Data_Size-1)
 		{
+			/*Receive the LAST data element*/
+			Global_Received_Data[Counter] = SPIs[SPI_Num]->SPI_DR;
+
 			/*Disable the RXC interrupt*/
 			SPIs[SPI_Num]->SPI_CR2 &= ~(1<<(SPI_INTERRUPT_RXNEIE));
 
 			/*Clear IRQ Source*/
 			IRQ_Source[SPI_Num] = NO_SRC;
 
-			/*Receive the next data element*/
-			Global_Received_Data[Counter++] = SPIs[SPI_Num]->SPI_DR;
-
 			/*Call The call Back Function*/
 			SPI_pf_CallBackFuncs[SPI_Num][SPI_FLAGS_RXNE]();
 
+			Counter=0;
 		}
-		else
-		{
-			if (Counter == Global_Data_Size)
-			{
-				/*Disable the RXC interrupt*/
-				SPIs[SPI_Num]->SPI_CR2 &= ~(1<<(SPI_INTERRUPT_RXNEIE));
-
-				/*Clear IRQ Source*/
-				IRQ_Source[SPI_Num] = NO_SRC;
-
-				/*Call The call Back Function*/
-				SPI_pf_CallBackFuncs[SPI_Num][SPI_FLAGS_RXNE]();
-			}
-			else {
-				/*Receive the next data element*/
-				Global_Received_Data[Counter++] = SPIs[SPI_Num]->SPI_DR;
-			}
+		else {
+			/*Receive the next data element*/
+			Global_Received_Data[Counter++] = SPIs[SPI_Num]->SPI_DR;
 		}
+
 	}
 	else if (IRQ_Source[SPI_Num] == SOURCE_RX_MASTER)
 	{
