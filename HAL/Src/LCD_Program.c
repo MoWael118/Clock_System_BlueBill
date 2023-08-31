@@ -238,6 +238,11 @@ uint8_t LCD_u8SendNumber(uint32_t Number)
 	uint8_t NumberOfDigits=0;
 	uint8_t NumberDigits[10]={0};
 	/*Loop on Number Digits until it finishes*/
+	if(Number == 0)
+	{
+		LCD_voidSendData('0');
+	}
+
 	while (Number != 0)
 	{
 		NumberDigits[Counter] = (Number%10)+48;
@@ -245,10 +250,28 @@ uint8_t LCD_u8SendNumber(uint32_t Number)
 		Counter++;
 		NumberOfDigits++;
 	}
+
 	/*Display digits of the number*/
 	for (Counter=0;Counter<NumberOfDigits;Counter++)
 	{
 		LCD_voidSendData(NumberDigits[NumberOfDigits-Counter-1]);
 	}
 	return Local_u8ErrorState;
+}
+
+
+void LCD_VoidGoToXY(uint8_t x, uint8_t y)
+{
+	uint8_t Address=0;
+
+	if(x==0)
+	{  /*Location is at first line */
+		Address = y;
+	}
+	else if(x==1)
+	{   /*Location is at secound line */
+		Address = y + 0x40 ;
+	}
+	/*set bit number 7 for set DDRAM address command  */
+	LCD_voidSendCommand(Address + 128 ); /* 128 = 10000000 */
 }
