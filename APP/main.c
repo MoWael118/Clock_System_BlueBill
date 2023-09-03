@@ -17,7 +17,10 @@
 /* ================================================== *
  *  GLOBAL VARIABLES                                  *
  * ================================================== */
+extern volatile uint8_t flag ;
 
+volatile uint8_t RECEIVED = 0 ;
+ 
 uint8_t  DATA_ReceivedFromSPI = 0 ;
 
 /*****************************************************************************/
@@ -38,12 +41,34 @@ int main(void)
 	Interrupts_Init( ) ;
 
 	/* Receive Using SPI with Interrupt */
-	Receive_withInterrupt( ) ;
+	//Receive_withInterrupt( ) ;
+	
+	/* Receive Time form Nucleo*/
+	Recive_Time();
 
 
 	/* Loop forever */
 	while(1)
 	{
+ /* Check if data is receive */
+		if(flag ==1)
+		{
+			/* Check if receive is repeated */
+			if( RECEIVED == 0 )
+			{
+				   /* Receive Time form Nucleo*/
+				   Recive_Time( ) ;
+				   /* to perevent calling the Function more than one time without receiving data */
+				   RECEIVED = 1 ;
+			}
+			/* Display Date on LCD */
+			Display_Date();
+			/* Calculate the Time */
+			Count_Time();
+			/* Delay 1 sec */
+			SYSTICK_u8Delay_ms(1000);
+			/* Display Time on LCD */
+			Display_Time();
 
 	}
 }
@@ -58,6 +83,11 @@ void SPI1_CallBack( void )
 	{
 		/* Turn RED LED ON */
 		TURN_ON_LED( ) ;
+	}
+	else
+	{
+		flag=1;
+		RECEIVED = 0 ;
 	}
 }
 
