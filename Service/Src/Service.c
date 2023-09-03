@@ -34,6 +34,7 @@ SPI_CONFIGS_t * SPICONFIG ;
 
 PinConfig_t * REDLED1_CONFIG ;
 
+
 typedef enum
 {
 	Seconds=0,
@@ -51,14 +52,6 @@ uint8_t Received[7]={0};
 
 
 
-PinConfig_t SPI_MOSI ={.Port_Num= PORTA, .Pin_Num= PIN7, .Input_Type=FLOATING_INPUT, .Mode=INPUT  };
-PinConfig_t SPI_SCK  ={.Port_Num= PORTA, .Pin_Num= PIN5, .Input_Type=FLOATING_INPUT, .Mode=INPUT  };
-
-SPI_CONFIGS_t SPI = {.SPI_Num = SPI_NUMBER1, .Transfer_Mode= TRANSFER_MODE_FULL_DUPLEX,
-		.Frame_Size= DATA_FRAME_SIZE_8BITS, .Chip_Mode= CHIP_MODE_SLAVE, .Slave_Manage_State= SLAVE_MANAGE_SW_SLAVE_ACTIVE ,
-		.CRC_State=CRC_STATE_DISABLED, .Clock_Phase=CLOCK_PHASE_CAPTURE_FIRST,.Clock_Polarity=CLOCK_POLARITY_IDLE_LOW,.Frame_Type=FRAME_FORMAT_MSB_FIRST,
-};
-extern uint8_t  DATA_ReceivedFromSPI ;
 /*****************************************************************************/
 /****************   FUNCTIONS IMPLEMENTATION SECTION    **********************/
 /*****************************************************************************/
@@ -132,11 +125,7 @@ void TURN_ON_LED( void )
 void Receive_withInterrupt( void )
 {
 	/* Receive with SPI Through Interrupt */
-	SPI_Receive_IT(SPICONFIG, &DATA_ReceivedFromSPI, 1 , SPI1_CallBack ) ;
-}
-void Recive_Time(void)
-{
-	SPI_Receive_IT(&SPI, Received, 7,&SPI_CALL_BACK);
+	SPI_Receive_IT(SPICONFIG, Received, 7,&SPI1_CallBack);
 }
 
 
@@ -222,3 +211,7 @@ void Display_Date(void)
 
 	LCD_u8SendNumber(2000 + Received[Year]);
 }
+
+
+
+

@@ -15,6 +15,8 @@
 #ifndef INC_SERVICE_H_
 #define INC_SERVICE_H_
 
+#include "../../MCAL/Inc/SYSTICK_Interface.h"
+
 /*****************************************************************************/
 /************************   MACROS SECTION    ********************************/
 /*****************************************************************************/
@@ -24,13 +26,13 @@
 #define LED_PORT   PORTA
 #define LED_PIN    PIN3
 
+#define DELAY_1S()  ( SYSTICK_u8Delay_ms(1000) )
 
 /*****************************************************************************/
 /******************   FUNCTIONS PROTOTYPES SECTION    ************************/
 /*****************************************************************************/
 
 void Clock_Init(void) ;
-void Recive_Time(void);
 
 void Display_Time(void);
 
