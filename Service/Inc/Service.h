@@ -29,12 +29,17 @@
 /******************   FUNCTIONS PROTOTYPES SECTION    ************************/
 /*****************************************************************************/
 
-void Clock_Init( void ) ;
+void Clock_Init(void) ;
+void Recive_Time(void);
+
+void Display_Time(void);
+
+void Count_Time(void);
 
 void Pins_Init( void ) ;
+void Display_Date(void);
 
 void SPI1_Init( void ) ;
-
 void Interrupts_Init( void ) ;
 
 void SPI1_CallBack( void ) ;

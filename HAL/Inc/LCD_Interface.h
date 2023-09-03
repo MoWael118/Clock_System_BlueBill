@@ -66,6 +66,6 @@ uint8_t LCD_u8SendString(const char * String);
  */
 uint8_t LCD_u8SendNumber(uint32_t Number);
 
-
+void LCD_VoidGoToXY(uint8_t x, uint8_t y) ;
 
 #endif /* HAL_LCD_INC_LCD_INTERFACE_H_ */
