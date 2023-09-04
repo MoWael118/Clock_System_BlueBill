@@ -576,12 +576,3 @@ void SPI2_IRQHandler (void)
 }
 
 /****************** End OF IRQ HANDLERS ****************/
-	SPI_IRQ_Source_HANDLE(SPI_NUMBER1);
-}
-
-void SPI2_IRQHandler (void)
-{
-	SPI_IRQ_Source_HANDLE(SPI_NUMBER2);
-}
-
-/****************** End OF IRQ HANDLERS ****************/

@@ -16,20 +16,20 @@
 #include <stdint.h>
 
 #include <stdint.h>
-#include "../LIBRARY/STM32F103xx.h"
-#include "../LIBRARY/ErrTypes.h"
-#include "../LIBRARY/BitMath.h"
-#include "../MCAL/Inc/EXTI_Interface.h"
-#include "../MCAL/Inc/AFIO_Interface.h"
-#include "../MCAL/Inc/GPIO_Interface.h"
-#include "../MCAL/Inc/NVIC_Interface.h"
-#include "../MCAL/Inc/SPI_Interface.h"
-#include "../MCAL/Inc/SYSTICK_Interface.h"
-#include "../MCAL/Inc/RCC_Interface.h"
+#include "../../LIBRARY/STM32F103xx.h"
+#include "../../LIBRARY/ErrTypes.h"
+#include "../../LIBRARY/BitMath.h"
+#include "../../MCAL/Inc/EXTI_Interface.h"
+#include "../../MCAL/Inc/AFIO_Interface.h"
+#include "../../MCAL/Inc/GPIO_Interface.h"
+#include "../../MCAL/Inc/NVIC_Interface.h"
+#include "../../MCAL/Inc/SPI_Interface.h"
+#include "../../MCAL/Inc/SYSTICK_Interface.h"
+#include "../../MCAL/Inc/RCC_Interface.h"
 #include "../Inc/Service.h"
-#include "../HAL/Inc/LCD_Interface.h"
-#include "../HAL/Inc/LED_Interface.h"
-#include "../HAL/Inc/BUZZER_Interface.h"
+#include "../../HAL/Inc/LCD_Interface.h"
+#include "../../HAL/Inc/LED_Interface.h"
+#include "../../HAL/Inc/BUZZER_Interface.h"
 /*****************************************************************************/
 /*******************   GLOBAL VARIABLES SECTION    ***************************/
 /*****************************************************************************/
@@ -73,7 +73,7 @@ uint8_t Received[7]={0};
  *@brief  :  This Function Is Responsible For Initializing The Clocks For The Used Peripherals
  *@retval void :
  *==============================================================================================================================================*/
-void ClockInit()
+void Clock_Init()
 {
 /* Enable GPIO PORTA Clock */
 	RCC_Set_APB2Peripheral_CLK( APB2_IOPA , ENABLED ) ;
@@ -95,7 +95,7 @@ void ClockInit()
  *@brief  :  This Function Is Responsible For Initializing The Pins For The Used Peripherals
  *@retval void :
  *==============================================================================================================================================*/
-void PinInit()
+void Pins_Init()
 {
 /* RED LED1 GPIO Configuration */
 	static PinConfig_t RED_LED1 =
@@ -268,7 +268,7 @@ void TURN_ON_LED( void )
 void Receive_withInterrupt( void )
 {
 	/* Receive with SPI Through Interrupt */
-	SPI_Receive_IT(SPICONFIG, Received, 7,&SPI1_CallBack);
+	SPI_Receive_IT(SPICONFIG, Received, 30 ,&SPI1_CallBack);
 }
 
 

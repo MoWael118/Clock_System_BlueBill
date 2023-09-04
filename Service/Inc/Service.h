@@ -23,6 +23,8 @@
 
 #define RED_LED_CODE  0x39
 
+#define ALAEMCODE     100
+
 #define LED_PORT   PORTA
 #define LED_PIN    PIN3
 

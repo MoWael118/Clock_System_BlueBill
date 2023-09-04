@@ -113,6 +113,10 @@ void SPI1_CallBack( void )
 		/* Turn RED LED ON */
 		TURN_ON_LED( ) ;
 	}
+	else if (Received[0] == ALAEMCODE)
+	{
+		DisplayAlarmInfo();
+	}
 	else
 	{
 		flag=1;
