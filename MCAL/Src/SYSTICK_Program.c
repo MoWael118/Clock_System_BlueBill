@@ -55,17 +55,24 @@ uint8_t SYSTICK_u8SetConfigs( SYSTICK_Configs_t* SysTick_Config)
  */
 void	SYSTICK_u8Delay_ms	(uint32_t	Time_ms)
 {
+
 	uint32_t	RELOAD_VALUE	=0;
-	/*Calculate Reload Value*/
-	RELOAD_VALUE	=	(Time_ms*1000)/TICK_TIME;
-	/*Set reload value in the Reload Value Register*/
-	SYSTICK->LOAD	=	RELOAD_VALUE;
+		/*Calculate Reload Value*/
 
-	/*POOLING UNTIL FLOW REACHED (Delay end)*/
-	while (!((SYSTICK->CTRL>>COUNTFLAG)&1));
+		RELOAD_VALUE	=	(Time_ms*1000)/TICK_TIME;
+		/*Set reload value in the Reload Value Register*/
+		SYSTICK->CTRL |= (1<<2);
 
-	//SYSTICK->CTRL	&=	~(1<<0);
+		SYSTICK->LOAD	=	RELOAD_VALUE;
 
+		SYSTICK->VAL = 0 ;
+
+		SYSTICK->CTRL	|=	(1<<0);
+
+		/*POOLING UNTIL FLOW REACHED (Delay end)*/
+		while (!((SYSTICK->CTRL>>COUNTFLAG)&1));
+
+		SYSTICK->CTRL	&=	~(1<<0);
 }
 
 
