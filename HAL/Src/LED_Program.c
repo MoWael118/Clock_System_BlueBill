@@ -20,7 +20,7 @@ void LED_ON(PinConfig_t * LED_Configs)
 {
 	if (NULL != LED_Configs)
 	{
-		GPIO_u8PinInit(&LED_Configs);
+		GPIO_u8PinInit(LED_Configs);
 		GPIO_u8SetPinStatus(LED_Configs->Port_Num, LED_Configs->Pin_Num, HIGH_V);
 	}
 	else
@@ -39,7 +39,7 @@ void LED_OFF(PinConfig_t * LED_Configs)
 {
 	if (NULL != LED_Configs)
 	{
-		GPIO_u8PinInit(&LED_Configs);
+		GPIO_u8PinInit(LED_Configs);
 		GPIO_u8SetPinStatus(LED_Configs->Port_Num, LED_Configs->Pin_Num, LOW_V);
 	}
 	else

@@ -19,7 +19,7 @@ void BUZZER_ON(PinConfig_t * BUZZER_Configs)
 {
 	if (NULL != BUZZER_Configs)
 	{
-		GPIO_u8PinInit(&BUZZER_Configs);
+		GPIO_u8PinInit(BUZZER_Configs);
 		GPIO_u8SetPinStatus(BUZZER_Configs->Port_Num, BUZZER_Configs->Pin_Num, HIGH_V);
 	}
 	else
@@ -38,7 +38,7 @@ void BUZZER_OFF(PinConfig_t * BUZZER_Configs)
 {
 	if (NULL != BUZZER_Configs)
 	{
-		GPIO_u8PinInit(&BUZZER_Configs);
+		GPIO_u8PinInit(BUZZER_Configs);
 		GPIO_u8SetPinStatus(BUZZER_Configs->Port_Num, BUZZER_Configs->Pin_Num, LOW_V);
 	}
 	else
