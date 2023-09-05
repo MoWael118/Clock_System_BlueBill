@@ -23,12 +23,20 @@
 
 #define RED_LED_CODE  0x39
 
-#define ALAEMCODE     100
+#define DISPLAY_CODE  0x41
+
+#define ALARMCODE     100
 
 #define LED_PORT   PORTA
 #define LED_PIN    PIN3
 
-#define DELAY_1S()  ( SYSTICK_u8Delay_ms(1000) )
+#define DELAY_1S()  ( SYSTICK_u8Delay_ms(930) )
+
+typedef enum
+{
+	NO_RECEIVE = 0 , RED_LED_RECEIVED = 1 , ALARM_RECEIVED = 2 , DISPLAY_RECEIVED = 3
+
+} RECEIVING_VAL_t;
 
 /*****************************************************************************/
 /******************   FUNCTIONS PROTOTYPES SECTION    ************************/
@@ -51,6 +59,9 @@ void SPI1_CallBack( void ) ;
 void TURN_ON_LED( void ) ;
 
 void Receive_withInterrupt( void ) ;
+
+void EXTI13_Init( void ) ;
+
 
 /*==============================================================================================================================================
  *@fn      :  void EXTI1_ISR()

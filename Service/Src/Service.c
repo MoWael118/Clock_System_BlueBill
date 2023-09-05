@@ -52,7 +52,7 @@ PinConfig_t * REDLED1_CONFIG ;
 
 typedef enum
 {
-	Seconds=0,
+	Seconds=1,
 	Minutes,
 	Hours,
 	Day,
@@ -61,9 +61,6 @@ typedef enum
 	Date,
 }Time_t;
 
-volatile uint8_t flag = 0;
-
-uint8_t Received[7]={0};
 
 /*****************************************************************************/
 /****************   FUNCTIONS IMPLEMENTATION SECTION    **********************/
@@ -108,6 +105,7 @@ void Pins_Init()
 
 	/* Intialize Both LED Configuration Structs Globally */
 	REDLED1_CONFIG = &RED_LED1 ;
+
 	/* Initialize the Buzzer Pin */
 	static PinConfig_t Buzzer_PB5 = {.Port_Num = PORTB, .Pin_Num = PIN5, .Mode = OUTPUT_LSPEED, .Output_Type = GP_PUSH_PULL};
 
@@ -115,25 +113,13 @@ void Pins_Init()
 	BuzzerPIN = &Buzzer_PB5;
 
 	/* Initialize the EXTI Pin */
-	PinConfig_t EXTI_PC1 = {.Port_Num = PORTC, .Pin_Num = PIN13, .Mode = INPUT, .PullType = PULLUP, .Input_Type = PULLUPDOWN_INPUT};
+	PinConfig_t EXTI_PC1 = {.Port_Num = PORTC, .Pin_Num = PIN13, .Mode = INPUT, .PullType = PULLDOWN, .Input_Type = PULLUPDOWN_INPUT};
 
 	/* Initialize the EXTI Pin */
 	GPIO_u8PinInit(&EXTI_PC1);
 
 	/* Initialize the LED Pin */
 	GPIO_u8PinInit(&Buzzer_PB5);
-
-	/* Initialize the EXTI Configuration */
-	EXTI_Confg PC1_EXTIConfig = {.LINE = EXTI13, .Mode = Enable, .Trigger = FallingEdge, .EXTI_CallBackFunc = &EXTI1_ISR};
-
-	/* Initialize the EXTI */
-	EXTI_Init(&PC1_EXTIConfig);
-
-	/* Initialize the AFIO For EXTI13 */
-	AFIO_U8SetEXTIPort(AFIO_EXTI13, AFIO_PortC);
-
-	/* Initialize the LCD Pins */
-	LCD_voidInit();
 
 	/* SPI Pins Configuration */
 	/* MOSI Pin */
@@ -169,23 +155,7 @@ void SPI1_Init(void)
  *@brief  :  This Function Is Responsible For Handling The Interrupt Of EXTI1
  *@retval void :
  *==============================================================================================================================================*/
-void EXTI1_ISR()
-{
-	/* Local Variable to store the Counter used in the looping */
-	uint8_t Counter1 = 0;
 
-	/* Turn on the Buzzer */
-	BUZZER_ON(BuzzerPIN);
-
-	/* Delay for 5 Seconds */
-	for (Counter1 = 0; Counter1 < 5; Counter1++)
-	{
-		SYSTICK_u8Delay_ms(1000);
-	}
-
-	/* Turn off the Buzzer */
-	BUZZER_OFF(BuzzerPIN);
-}
 /*==============================================================================================================================================
  *@fn      :  void SPI1_CallBack()
  *@brief  :  This Function Is Responsible For Handling The Interrupt Of SPI1
@@ -200,10 +170,10 @@ void DisplayAlarmInfo(void)
 	uint8_t Counter = 0;
 
 	/* Loop until the first 13(ASCII of Enter) */
-	for (Counter = 0; RecivedData[Counter] != 13; Counter++)
+	for (Counter = 1; RecivedData[Counter] != 13; Counter++)
 	{
 		/* Check if the Counter is 0 to print the Alarm Number */
-		if (Counter == 0)
+		if (Counter == 1)
 		{
 			/* Print the Alarm Number */
 			LCD_u8SendString("Alarm Number=");
@@ -219,6 +189,11 @@ void DisplayAlarmInfo(void)
 			LCD_voidSendData(RecivedData[Counter]);
 		}
 	}
+	for( Counter = 0 ; Counter < 4 ; Counter++ )
+	{
+		DELAY_1S( ) ;
+	}
+	LCD_voidSendCommand(1) ;
 }
 
 void Display_Date(void)
@@ -226,23 +201,23 @@ void Display_Date(void)
 	/* Display Date on LCD */
 
 	LCD_VoidGoToXY(0, 0);
-	if( Received[Date] <=9 )
+	if( RecivedData[Date] <=9 )
 	{
 		LCD_u8SendNumber(0);
 	}
-	LCD_u8SendNumber(Received[Date]);
+	LCD_u8SendNumber(RecivedData[Date]);
 
 	LCD_voidSendData('/');
 
-	if( Received[Month] <=9 )
+	if( RecivedData[Month] <=9 )
 	{
 		LCD_u8SendNumber(0);
 	}
-	LCD_u8SendNumber(Received[Month]);
+	LCD_u8SendNumber(RecivedData[Month]);
 
 	LCD_voidSendData('/');
 
-	LCD_u8SendNumber(2000 + Received[Year]);
+	LCD_u8SendNumber(2000 + RecivedData[Year]);
 }
 
 void Interrupts_Init( void )
@@ -268,7 +243,7 @@ void TURN_ON_LED( void )
 void Receive_withInterrupt( void )
 {
 	/* Receive with SPI Through Interrupt */
-	SPI_Receive_IT(SPICONFIG, Received, 30 ,&SPI1_CallBack);
+	SPI_Receive_IT(SPICONFIG, RecivedData, 30 ,&SPI1_CallBack);
 }
 
 
@@ -277,30 +252,30 @@ void Display_Time(void)
 {
 	LCD_VoidGoToXY(1, 0);
 
-	if(Received[Hours] <=9 )
+	if(RecivedData[Hours] <=9 )
 	{
 		LCD_u8SendNumber(0);
 
 	}
 
-	LCD_u8SendNumber(Received[Hours]);
+	LCD_u8SendNumber(RecivedData[Hours]);
 
 	LCD_voidSendData(':');
 
-	if(Received[Minutes] <=9 )
+	if(RecivedData[Minutes] <=9 )
 	{
 		LCD_u8SendNumber(0);
 	}
-	LCD_u8SendNumber(Received[Minutes]);
+	LCD_u8SendNumber(RecivedData[Minutes]);
 
 	LCD_voidSendData(':');
 
-	if(Received[Seconds] <=9 )
+	if(RecivedData[Seconds] <=9 )
 	{
 		LCD_u8SendNumber(0);
 	}
 
-	LCD_u8SendNumber(Received[Seconds]);
+	LCD_u8SendNumber(RecivedData[Seconds]);
 }
 
 
@@ -308,26 +283,37 @@ void Display_Time(void)
 
 void Count_Time(void)
 {
-	Received[Seconds]++;
+	RecivedData[Seconds]++;
 
-	if(Received[Hours] > 23)
+	if(RecivedData[Hours] > 23)
 	{
-		Received[Hours]=0;
+		RecivedData[Hours]=0;
 	}
 
-	if(Received[Minutes] > 59)
+	if(RecivedData[Minutes] > 59)
 	{
-		Received[Minutes]=0;
-		Received[Hours]++;
+		RecivedData[Minutes]=0;
+		RecivedData[Hours]++;
 	}
 
-	if(Received[Seconds] > 59)
+	if(RecivedData[Seconds] > 59)
 	{
-		Received[Seconds]=0;
-		Received[Minutes]++;
+		RecivedData[Seconds]=0;
+		RecivedData[Minutes]++;
 	}
 
 
 }
 
+void EXTI13_Init( void )
+{
+	/* Initialize the EXTI Configuration */
+	EXTI_Confg PC1_EXTIConfig = {.LINE = EXTI13, .Mode = Enable, .Trigger = RaisingEdge, .EXTI_CallBackFunc = &EXTI1_ISR};
+
+	/* Initialize the EXTI */
+	EXTI_Init(&PC1_EXTIConfig);
+
+	/* Initialize the AFIO For EXTI13 */
+	AFIO_U8SetEXTIPort(AFIO_EXTI13, AFIO_PortC);
+}
 
