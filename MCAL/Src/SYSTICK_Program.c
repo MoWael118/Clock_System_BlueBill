@@ -71,11 +71,11 @@ void	SYSTICK_u8Delay_ms	(uint32_t	Time_ms)
 	/*POOLING UNTIL FLOW REACHED (Delay end)*/
 	while (!((SYSTICK->CTRL>>COUNTFLAG)&1))
 	{
-		if( !( SYSTICK->CTRL&1 ) )
-		{
-			SYSTICK->CTRL	|=	(1<<0);
+		//if( !( SYSTICK->CTRL&1 ) )
+		//{
+		//	SYSTICK->CTRL	|=	(1<<0);
 
-		}
+		//}
 	}
 
 	SYSTICK->CTRL	&=	~(1<<0);

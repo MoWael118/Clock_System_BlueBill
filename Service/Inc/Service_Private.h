@@ -18,7 +18,7 @@
 #define LED_PORT PORTA
 #define LED_PIN PIN3
 
-#define DELAY_1S() (SYSTICK_u8Delay_ms(930))
+#define DELAY_1S() (SYSTICK_u8Delay_ms(890))
 
 typedef enum
 {
@@ -31,6 +31,11 @@ typedef enum
 	Date,
 } Time_t;
 
+typedef enum
+{
+	DS1307_SUNDAY = 1 , DS1307_MONDAY , DS1307_TUESDAY , DS1307_WEDNESDAY , DS1307_THURSDAY , DS1307_FRIDAY ,
+	DS1307_SATURDAY
+}DAYS_t ;
 
 
 #endif

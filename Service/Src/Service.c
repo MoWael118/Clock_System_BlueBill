@@ -273,6 +273,7 @@ void Count_Time(void)
 	{
 		/* Clear Hours*/
 		RecivedData[Hours] = 0;
+		RecivedData[Day]++;
 	}
 
 	/* Check if Minutes > 59 */
@@ -329,6 +330,19 @@ void Display_Date(void)
 
 	/* Display Year */
 	LCD_u8SendNumber(2000 + RecivedData[Year]);
+
+	LCD_VoidGoToXY(0,13);
+
+	switch( RecivedData[Day] )
+	{
+	case DS1307_SUNDAY : LCD_u8SendString((char*)"SUN") ; break ;
+	case DS1307_MONDAY : LCD_u8SendString((char*)"MON") ; break ;
+	case DS1307_TUESDAY : LCD_u8SendString((char*)"TUE") ; break ;
+	case DS1307_WEDNESDAY : LCD_u8SendString((char*)"WED") ; break ;
+	case DS1307_THURSDAY : LCD_u8SendString((char*)"THU") ; break ;
+	case DS1307_FRIDAY : LCD_u8SendString((char*)"FRI") ; break ;
+	case DS1307_SATURDAY : LCD_u8SendString((char*)"SAT") ; break ;
+	}
 }
 
 /*==============================================================================================================================================
