@@ -1,18 +1,19 @@
 /**
  ******************************************************************************
  * @file           : main.c
- * @author         : Mohamed Wael
+ * @author         : MOHAMMEDs & HEMA
  * @brief          : Main program body For BlueBill in Clock System Project
  ******************************************************************************
  */
 /************************ SOURCE REVISION LOG *********************************
- *    Date    Version   Author             Description
- *  16/08/23   1.0.0   Mohamemd Wael     Initial Release ( INCLUDES )
- *  28/8/23    1.0.0   Mohamed Waled     Initial Release For Functions ( ClockInit - PinInit - SPIInit)
- *  29/8/23    1.0.0   Mohamed Waled     Initial Release For Functions (SPI1_CallBack - EXTI1_ISR)
- *  30/8/23    1.0.0   Mohamed Waled     Adding Some Documentation And Fixing Some Bugs
+ *    Date        Author             Description
+ *  16/08/23     Mohamemd Wael      Initial Release ( INCLUDES )
+ *  27/08/23     Mohammed Ayman     Adding Basic Funtionality of Receiveing Data From Nucleo
+ *  28/08/23     Mohammed Ayman     Adding Documentation and Solving Bugs
+ *  28/08/23     Mohammed Waled     Initial Release For Functions ( ClockInit - PinInit - SPIInit)
+ *  29/08/23     Mohammed Waled     Initial Release For Functions (SPI1_CallBack - EXTI1_ISR)
+ *  30/08/23     Mohammed Waled     Adding Some Documentation And Fixing Some Bugs
  *******************************************************************************/
-
 
 /*****************************************************************************/
 /********************    MAIN INCLUDES SECTION    ****************************/
@@ -34,23 +35,19 @@
 /*******************   GLOBAL VARIABLES SECTION    ***************************/
 /*****************************************************************************/
 
-
-/* Global Pointer to SPI_CONFIGS_t Struct */
-extern SPI_CONFIGS_t *SPICONFIG;
-
 /* Global Pointer to Buzzer Struct */
-extern PinConfig_t *BuzzerPIN ;
+extern PinConfig_t *BuzzerPIN;
 
 /* Global Array to store the received data from the SPI
- * The first element is the alarm number
- * The Rest of the elements are the Alarm Name until the first 13(ASCII of Enter) */
+ * The first Element is A Code to Determine the Type of Data Received
+  1- RED_LED_CODE
+  2- ALARMCODE
+  3- DISPLAY_CODE
+ */
 extern uint8_t RecivedData[30];
 
 /* Indication of Receving Via SPI */
-volatile RECEIVING_VAL_t RECEIVING_VALUE = NO_RECEIVE ;
-
-
-
+volatile RECEIVING_VAL_t RECEIVING_VALUE = NO_RECEIVE;
 
 /*****************************************************************************/
 /***********************   MAIN CODE SECTION    ******************************/
@@ -58,55 +55,69 @@ volatile RECEIVING_VAL_t RECEIVING_VALUE = NO_RECEIVE ;
 int main(void)
 {
 	/* Initialize Clocks For Needed Peripherals */
-	Clock_Init( ) ;
+	Clock_Init();
 
 	/* Pins Initialization through GPIO */
-	Pins_Init( ) ;
+	Pins_Init();
 
 	/* Initialize the LCD  */
 	LCD_voidInit();
 
 	/* EXTI Configuration Setting */
-	EXTI13_Init( ) ;
+	EXTI13_Init();
 
 	/* Initialize SPI Peripheral */
-	SPI1_Init( ) ;
+	SPI1_Init();
 
 	/* Intterupts Enable Through NVIC */
-	Interrupts_Init( ) ;
+	Interrupts_Init();
 
 	/* Receive Using SPI with Interrupt */
-	Receive_withInterrupt( ) ;
+	Receive_withInterrupt();
 
 	/* Loop forever */
-	while(1)
+	while (1)
 	{
+		/* Wait Until SPI Receive Any Data */
+		while (!RECEIVING_VALUE)
+			;
 
-		while( !RECEIVING_VALUE ) ;
-
-		switch ( RECEIVING_VALUE )
+		/* Check on the Received Data */
+		switch (RECEIVING_VALUE)
 		{
-		case RED_LED_RECEIVED :
+			/* RED LED CODE Received */
+		case RED_LED_RECEIVED:
 
-			TURN_ON_LED(  ) ;
-			LCD_voidSendCommand( 1 );
+			/* Turn RED LED ON */
+			TURN_ON_LED();
+
+			/* Clear LCD */
+			CLEAR_DISPLAY();
+
 			/* Shut Down */
-			while(1);
+			while (1)
+				;
 
-			break ;
+			break;
 
-		case ALARM_RECEIVED :
+			/* ALARM CODE Received */
+		case ALARM_RECEIVED:
 
-			DisplayAlarmInfo(  ) ;
+			/* Display Alarm Info on LCD :
+			 1st Line : Alarm Time ,
+			 2nd Line : Alarm Date
+			 */
+			DisplayAlarmInfo();
 
+			/* Turn Buzzer OFF */
 			BUZZER_OFF(BuzzerPIN);
 
-			RECEIVING_VALUE = NO_RECEIVE ;
+			/* Reset The Receiving Value */
+			RECEIVING_VALUE = NO_RECEIVE;
 
-			break ;
+			break;
 
-
-		case   DISPLAY_RECEIVED :
+		case DISPLAY_RECEIVED:
 
 			/* Execution Time of Functions Below Can't be Determined Exactly
 			 * So We Approxematly Put A Value of It & Subtracted it From 1 Second Delay ,
@@ -114,48 +125,49 @@ int main(void)
 			 */
 
 			/* Display Date on LCD */
-			Display_Date();     /* 48ms Execution Time */
+			Display_Date(); /* 48ms Execution Time Approxmate */
 
 			/* Calculate the Time */
-			Count_Time(); /* 1 ms */
+			Count_Time(); /* 1 ms Approxmate */
 
 			/* Delay 1 sec */
-			DELAY_1S();
+			_delay_1s( ) ;
 
 			/* Display Time on LCD */
-			Display_Time();  /* 36 ms Execution Time */
+			Display_Time(); /* 36 ms Execution Time Approxmate */
 
-			break ;
+			break;
 
-		default :
-			break ;
+		default:
+			/* Do Nothing */
+			break;
 		}
-
-
-
 	}
-
 }
-
-
 
 /*****************************************************************************/
 /***********************      ISRs SECTION      ******************************/
 /*****************************************************************************/
 
-void SPI1_CallBack( void )
+/*==============================================================================================================================================
+ *@fn      :  void SPI1_CallBack()
+ *@brief   :  SPI Callback Function to handle the received data from the master
+ *@retval  :  void
+ *==============================================================================================================================================*/
+void SPI1_CallBack(void)
 {
-	if( RecivedData[ 0 ] == RED_LED_CODE )
+	/* Check on First Element of the Received Data */
+	if (RecivedData[0] == RED_LED_CODE)
 	{
-		RECEIVING_VALUE = RED_LED_RECEIVED ;
+		RECEIVING_VALUE = RED_LED_RECEIVED;
 	}
-	else if( RecivedData[ 0 ] == ALARMCODE )
+	else if (RecivedData[0] == ALARMCODE)
 	{
-		RECEIVING_VALUE = ALARM_RECEIVED ;
+		RECEIVING_VALUE = ALARM_RECEIVED;
 	}
-	else if ( RecivedData[ 0 ] == DISPLAY_CODE )
+	else if (RecivedData[0] == DISPLAY_CODE)
 	{
-		RECEIVING_VALUE = DISPLAY_RECEIVED ;
+		RECEIVING_VALUE = DISPLAY_RECEIVED;
 	}
 	else
 	{
@@ -163,15 +175,16 @@ void SPI1_CallBack( void )
 	}
 
 	/* Receive New Data */
-	Receive_withInterrupt( ) ;
-
+	Receive_withInterrupt();
 }
 
-
-void EXTI1_ISR()
+/*==============================================================================================================================================
+ *@fn      :  void EXTI13_ISR()
+ *@brief  :  This Function Is Responsible For Handling The Interrupt Of EXTI13
+ *@retval void :
+ *==============================================================================================================================================*/
+void EXTI13_ISR()
 {
 	/* Turn on the Buzzer */
 	BUZZER_ON(BuzzerPIN);
 }
-
-
