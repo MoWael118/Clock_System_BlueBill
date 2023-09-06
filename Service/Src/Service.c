@@ -214,78 +214,120 @@ void DisplayAlarmInfo(void)
 	LCD_voidSendCommand(1);
 }
 
+/*==============================================================================================================================================
+ *@fn     : void Display_Time()
+ *@brief  : This Function Is Responsible For Display time on The LCD
+ *@retval : void
+ *==============================================================================================================================================*/
 void Display_Time(void)
 {
+	/* Go to the second line */
 	LCD_VoidGoToXY(1, 0);
 
+	/* Check if Hour is smaller than 9 */
 	if (RecivedData[Hours] <= 9)
 	{
+		/* Display 0 before Hour */
 		LCD_u8SendNumber(0);
 	}
-
+	/* Display Minutes */
 	LCD_u8SendNumber(RecivedData[Hours]);
 
+	/* Display : */
 	LCD_voidSendData(':');
 
+	/* Check if Minute is smaller than 9 */
 	if (RecivedData[Minutes] <= 9)
 	{
+		/* Display 0 before Minute */
 		LCD_u8SendNumber(0);
 	}
+	/* Display Minutes */
 	LCD_u8SendNumber(RecivedData[Minutes]);
 
+	/* Display : */
 	LCD_voidSendData(':');
 
+	/* Check if Second is smaller than 9 */
 	if (RecivedData[Seconds] <= 9)
 	{
+		/* Display 0 before Second */
 		LCD_u8SendNumber(0);
 	}
-
+	/* Display Seconds */
 	LCD_u8SendNumber(RecivedData[Seconds]);
 }
 
+/*==============================================================================================================================================
+ *@fn     : void Count_Time()
+ *@brief  : This Function Is Responsible For Counte time 
+ *@retval : void
+ *==============================================================================================================================================*/
 void Count_Time(void)
 {
+	/* Increment Seconds */
 	RecivedData[Seconds]++;
 
+	/* Check if Hours > 23 */
 	if (RecivedData[Hours] > 23)
 	{
+		/* Clear Hours*/
 		RecivedData[Hours] = 0;
 	}
 
+	/* Check if Minutes > 59 */
 	if (RecivedData[Minutes] > 59)
 	{
+		/* Clear Minutes*/
 		RecivedData[Minutes] = 0;
+		/* Increment Hours */
 		RecivedData[Hours]++;
 	}
 
+	/* Check if Seconds > 59 */
 	if (RecivedData[Seconds] > 59)
 	{
+		/* Clear Seconds*/
 		RecivedData[Seconds] = 0;
+		/* Increment Minutes */
 		RecivedData[Minutes]++;
 	}
 }
 
+/*==============================================================================================================================================
+ *@fn     : void Display_Date()
+ *@brief  : This Function Is Responsible For Display Date on The LCD
+ *@retval : void
+ *==============================================================================================================================================*/
 void Display_Date(void)
 {
-	/* Display Date on LCD */
-
+	/* Go to the first line */
 	LCD_VoidGoToXY(0, 0);
+	
+	/* Check if Date > 9 */
 	if (RecivedData[Date] <= 9)
 	{
+		/* Display 0 before Minute */
 		LCD_u8SendNumber(0);
 	}
+	/* Display Day */
 	LCD_u8SendNumber(RecivedData[Date]);
 
+	/* Display / */
 	LCD_voidSendData('/');
 
+	/* Check if Month > 9 */
 	if (RecivedData[Month] <= 9)
 	{
 		LCD_u8SendNumber(0);
 	}
+	/* Display Month */
 	LCD_u8SendNumber(RecivedData[Month]);
 
+	/* Display / */
 	LCD_voidSendData('/');
 
+	/* Display Year */
 	LCD_u8SendNumber(2000 + RecivedData[Year]);
 }
 
