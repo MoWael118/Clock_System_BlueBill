@@ -15,67 +15,66 @@
 #ifndef INC_SERVICE_H_
 #define INC_SERVICE_H_
 
-#include "../../MCAL/Inc/SYSTICK_Interface.h"
-
 /*****************************************************************************/
 /************************   MACROS SECTION    ********************************/
 /*****************************************************************************/
 
-#define RED_LED_CODE  0x39
+typedef enum
+{
+	NO_RECEIVE = 0,
+	RED_LED_RECEIVED = 1,
+	ALARM_RECEIVED = 2,
+	DISPLAY_RECEIVED = 3
 
-#define DISPLAY_CODE  0x41
-
-#define ALARMCODE     100
-
-#define LED_PORT   PORTA
-#define LED_PIN    PIN3
-
-#define DELAY_1S()  ( SYSTICK_u8Delay_ms(930) )
+} RECEIVING_VAL_t;
 
 typedef enum
 {
-	NO_RECEIVE = 0 , RED_LED_RECEIVED = 1 , ALARM_RECEIVED = 2 , DISPLAY_RECEIVED = 3
+	RED_LED_CODE = 0x39 , DISPLAY_CODE = 0x41 , ALARMCODE = 100
 
-} RECEIVING_VAL_t;
+} RECEIVE_CODES_t;
 
 /*****************************************************************************/
 /******************   FUNCTIONS PROTOTYPES SECTION    ************************/
 /*****************************************************************************/
 
-void Clock_Init(void) ;
-
-void Display_Time(void);
-
-void Count_Time(void);
-
-void Pins_Init( void ) ;
-void Display_Date(void);
-
-void SPI1_Init( void ) ;
-void Interrupts_Init( void ) ;
-
-void SPI1_CallBack( void ) ;
-
-void TURN_ON_LED( void ) ;
-
-void Receive_withInterrupt( void ) ;
-
-void EXTI13_Init( void ) ;
-
-
 /*==============================================================================================================================================
- *@fn      :  void EXTI1_ISR()
- *@brief  :  This Function Is Responsible For Handling The Interrupt Of EXTI1
+ *@fn      :  void ClockInit()
+ *@brief  :  This Function Is Responsible For Initializing The Clocks For The Used Peripherals
  *@retval void :
  *==============================================================================================================================================*/
-void EXTI1_ISR();
-/*==============================================================================================================================================
- *@fn      :  void SPI1_CallBack()
- *@brief  :  This Function Is Responsible For Handling The Interrupt Of SPI1
- *@retval void :
- *==============================================================================================================================================*/
+void Clock_Init(void);
 
-void SPI1_CallBack(void);
+/*=======================================================================================
+ * @fn		 		:	Pins_Init
+ * @brief			:	Set The Pins Configurations
+ * @param			:	void
+ * @retval			:	void
+ * ======================================================================================*/
+void Pins_Init(void);
+
+/*=======================================================================================
+ * @fn		 		:	SPI1_Init
+ * @brief			:	Initialize SPI1
+ * @param			:	void
+ * @retval			:	void
+ * ======================================================================================*/
+void SPI1_Init(void);
+
+/*=======================================================================================
+ * @fn		 		:	EXTI13_Init
+ * @brief			:	Initialize the EXTI13
+ * @param			:	void
+ * @retval			:	void
+ * ======================================================================================*/
+void EXTI13_Init(void);
+
+/*==============================================================================================================================================
+ *@fn     :  void InterruptsInit (void)
+ *@brief  :  This Function Is Responsible For Initializing The Interrupts
+ *@retval :  void
+ *==============================================================================================================================================*/
+void Interrupts_Init(void);
 
 /*==============================================================================================================================================
  *@fn      :  void DisplayAlarmInfo()
@@ -83,5 +82,57 @@ void SPI1_CallBack(void);
  *@retval void :
  *==============================================================================================================================================*/
 void DisplayAlarmInfo(void);
+
+void Display_Time(void);
+
+void Count_Time(void);
+
+void Display_Date(void);
+
+/*==============================================================================================================================================
+ *@fn     : void TURN_ON_LED()
+ *@brief  : This Function Is Responsible For Turning On The LED
+ *@retval : void
+ *==============================================================================================================================================*/
+void TURN_ON_LED(void);
+
+/*==============================================================================================================================================
+ *@fn     : void Receive_withInterrupt()
+ *@brief  : This Function Is Responsible For Receiving Data With SPI Through Interrupt
+ *@retval : void
+ *==============================================================================================================================================*/
+void Receive_withInterrupt(void);
+
+/*==============================================================================================================================================
+ *@fn     : void CLEAR_DISPLAY()
+ *@brief  : This Function Is Responsible For Clearing The LCD
+ *@retval : void
+ *==============================================================================================================================================*/
+void CLEAR_DISPLAY(void);
+
+/*==============================================================================================================================================
+ *@fn     : void _delay_1s()
+ *@brief  : This Function Is Used to Give a Delay of 1 Second
+ *@retval : void
+ *==============================================================================================================================================*/
+void _delay_1s( void );
+
+/* ========================================================================= *
+ *                                 HANDLERS			                         *
+ * ========================================================================= */
+
+/*==============================================================================================================================================
+ *@fn      :  void SPI1_CallBack()
+ *@brief   :  SPI Callback Function to handle the received data from the master
+ *@retval  :  void
+ *==============================================================================================================================================*/
+void SPI1_CallBack(void);
+
+/*==============================================================================================================================================
+ *@fn      :  void EXTI13_ISR()
+ *@brief  :  This Function Is Responsible For Handling The Interrupt Of EXTI13
+ *@retval void :
+ *==============================================================================================================================================*/
+void EXTI13_ISR();
 
 #endif /* INC_SERVICE_H_ */
