@@ -13,6 +13,9 @@
  *  28/08/23     Mohammed Waled     Initial Release For Functions ( ClockInit - PinInit - SPIInit)
  *  29/08/23     Mohammed Waled     Initial Release For Functions (SPI1_CallBack - EXTI1_ISR)
  *  30/08/23     Mohammed Waled     Adding Some Documentation And Fixing Some Bugs
+ *  30/08/23     Ibrahim Mohammed   Implement Funtionality of Display Data on Lcd
+ *  30/08/23     Ibrahim Mohammed   Adding Some Documentation 
+ 
  *******************************************************************************/
 
 /*****************************************************************************/
