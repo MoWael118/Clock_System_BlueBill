@@ -48,6 +48,9 @@ SPI_CONFIGS_t *SPICONFIG;
 /* Global Pointer to PinConfig_t Struct to be used in LED_ON Function */
 PinConfig_t *REDLED1_CONFIG;
 
+/* Global Pointer to PinConfig_t Struct to be used in LED_ON Function */
+PinConfig_t *GREEN_LED_CONFIG;
+
 /*****************************************************************************/
 /****************   FUNCTIONS IMPLEMENTATION SECTION    **********************/
 /*****************************************************************************/
@@ -85,12 +88,24 @@ void Pins_Init()
 	/* RED LED1 GPIO Configuration */
 	static PinConfig_t RED_LED1 =
 		{
-			.Port_Num = LED_PORT, .Pin_Num = LED_PIN, .Output_Type = GP_PUSH_PULL, .Mode = OUTPUT_LSPEED};
+			.Port_Num = RED_LED_PORT, .Pin_Num = RED_LED_PIN, .Output_Type = GP_PUSH_PULL, .Mode = OUTPUT_LSPEED};
 
 	/* Initialize LEDs GPIO Configuration */
 	GPIO_u8PinInit(&RED_LED1);
 
-	/* Intialize Both LED Configuration Structs Globally */
+	/* GREEN LED GPIO Config */
+	static PinConfig_t GREEN_LED =
+	{
+			.Port_Num = GREEN_LED_PORT , .Pin_Num = GREEN_LED_PIN , .Output_Type = GP_PUSH_PULL , .Mode = OUTPUT_LSPEED
+	};
+
+	/* Initialize Green Led GPIO PORT */
+	GPIO_u8PinInit(&GREEN_LED) ;
+
+	/* Initialize Green Led Configuration Globally */
+	GREEN_LED_CONFIG = &GREEN_LED ;
+
+	/* Intialize LED Configuration Structs Globally */
 	REDLED1_CONFIG = &RED_LED1;
 
 	/* Initialize the Buzzer Pin */

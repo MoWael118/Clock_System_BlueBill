@@ -31,6 +31,7 @@
 
 #include "../HAL/Inc/LCD_Interface.h"
 #include "../HAL/Inc/BUZZER_Interface.h"
+#include "../HAL/Inc/LED_Interface.h"
 
 #include "../Service/Inc/Service.h"
 
@@ -40,6 +41,9 @@
 
 /* Global Pointer to Buzzer Struct */
 extern PinConfig_t *BuzzerPIN;
+
+/* Global Pointer to PinConfig_t Struct to be used in LED_ON Function */
+extern PinConfig_t *GREEN_LED_CONFIG;
 
 /* Global Array to store the received data from the SPI
  * The first Element is A Code to Determine the Type of Data Received
@@ -141,6 +145,12 @@ int main(void)
 
 			break;
 
+		case GREEN_LED_RECEIVED :
+
+			LED_ON(GREEN_LED_CONFIG) ;
+
+			RECEIVING_VALUE = NO_RECEIVE ;
+
 		default:
 			/* Do Nothing */
 			break;
@@ -172,9 +182,9 @@ void SPI1_CallBack(void)
 	{
 		RECEIVING_VALUE = DISPLAY_RECEIVED;
 	}
-	else
+	else if ( RecivedData[0] == GREEN_LED_CODE )
 	{
-		/* Do Nothing */
+		RECEIVING_VALUE = GREEN_LED_RECEIVED ;
 	}
 
 	/* Receive New Data */

@@ -15,8 +15,11 @@
 /************************   MACROS SECTION    ********************************/
 /*****************************************************************************/
 
-#define LED_PORT PORTA
-#define LED_PIN PIN3
+#define RED_LED_PORT PORTA
+#define RED_LED_PIN PIN3
+
+#define GREEN_LED_PORT PORTC
+#define GREEN_LED_PIN   PIN15
 
 #define DELAY_1S() (SYSTICK_u8Delay_ms(890))
 
